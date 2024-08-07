@@ -1,5 +1,11 @@
 package net.ledestudio.example.mod;
 
+
+
+import net.ledestudio.example.mod.charge.Gauge;
+import net.ledestudio.example.mod.client.Charge;
+import net.ledestudio.example.mod.client.Client;
+import net.ledestudio.example.mod.screen.Layer;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -38,6 +44,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 @Mod(ExampleMod.MODID)
 public class ExampleMod
 {
+
+    public static final Layer layer = new Layer();
+
+    public static final Gauge gauge = new Gauge();
+
     // Define mod id in a common place for everything to reference
     public static final String MODID = "examplemod";
     // Directly reference a slf4j logger
@@ -93,6 +104,8 @@ public class ExampleMod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
+
+
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
@@ -121,6 +134,8 @@ public class ExampleMod
         LOGGER.info("HELLO from server starting");
     }
 
+
+
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
@@ -131,6 +146,25 @@ public class ExampleMod
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+
+//            try {
+//                Client client = new Client("localhost", 1234);
+//                client.run();
+////
+////                Charge charge = new Charge(gauge.getGauge());
+////                client.sendPacket(charge.toByteBuf());
+////                client.sendPacket(charge.toByteBuf());
+//
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
         }
     }
+
+    public static Logger logger(){
+        return LOGGER;
+    }
+
+
+
 }
