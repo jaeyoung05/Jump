@@ -6,15 +6,16 @@ package net.ledestudio.example.mod.input;
 
 
 import net.ledestudio.example.mod.ExampleMod;
-import net.ledestudio.example.mod.charge.Gauge;
 
 
+import net.ledestudio.example.mod.charge.Send;
 import net.ledestudio.example.mod.client.Charge;
 import net.ledestudio.example.mod.client.Client;
+import net.ledestudio.example.mod.client.ClientInboundHandler;
 import net.ledestudio.example.mod.screen.Layer;
-import net.minecraft.client.DeltaTracker;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -50,26 +51,18 @@ public class InputEventListener {
 
                 if (gauge.getGauge() == 0) {
 
-                    layer.setRender(true);
-                    if (layer.getRender()){
-                        logger().info("ggggg");
-                    }
+                    isPressed = true;
 
-                    try {
-                    Client client = new Client("localhost", 1234);
-                    client.run();
 
-                    Charge charge = new Charge(playerName, (int) gauge.getGauge(), isPressed);
-                    client.sendPacket(charge.toByteBuf());
 
-                    } catch (Exception e) {
-                    throw new RuntimeException(e);
-                    }
+                    Send send = new Send();
+                    send.packet(playerName,(int) gauge.getGauge(), isPressed);
+
                     gauge.gaugeUp();
 
                 } else {
                     isPressed = false;
-
+                    layer.setRender(ClientInboundHandler.isBoolean);
                     gauge.gaugeUp();
                     ExampleMod.logger().info("charging: " + gauge.getGauge());
                 }
@@ -77,22 +70,21 @@ public class InputEventListener {
             }
 
         } else {
-                isPressed = false;
+            if (player == null){
+                return;
+            }
+
+                String playerName = player.getName().getString();
+                isPressed = true;
+
                 if (gauge.getGauge() > 0.5) {
                     ExampleMod.logger().info("last " + gauge.getGauge());
 
 
+                    Send send = new Send();
+                    send.packet(playerName,(int) gauge.getGauge(), isPressed);
 
-                        try {
-                            Client client = new Client("localhost", 1234);
-                            client.run();
 
-                            Charge charge = new Charge("ad", (int) gauge.getGauge(), isPressed);
-                            client.sendPacket(charge.toByteBuf());
-
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
 
                         layer.setRender(false);
                         gauge.setGauge(0);

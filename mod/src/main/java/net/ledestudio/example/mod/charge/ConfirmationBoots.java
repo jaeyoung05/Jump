@@ -1,21 +1,21 @@
-package net.ledestudio.example.common.charge.server;
+package net.ledestudio.example.mod.charge;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-public class ConfirmationShoes {
+public class ConfirmationBoots {
 
-    public static final int ID = 1;
+    public static final int ID = 2;
 
-    private int check;
+    public static boolean check;
 
-    public ConfirmationShoes(int check) {
+    public ConfirmationBoots(boolean check) {
         this.check = check;
     }
 
-    public ConfirmationShoes(ByteBuf buf){
+    public ConfirmationBoots(ByteBuf buf){
 
-        check = buf.readInt();
+        check = buf.readBoolean();
 
     }
 
@@ -24,14 +24,14 @@ public class ConfirmationShoes {
 
         buf.writeInt(ID);
 
-        buf.writeInt(check);
+        buf.writeBoolean(check);
 
         return buf;
     }
 
     @Override
     public String toString() {
-        return "ConfirmationShoes{" +
+        return "ConfirmationBoots{" +
                 "check=" + check +
                 '}';
     }

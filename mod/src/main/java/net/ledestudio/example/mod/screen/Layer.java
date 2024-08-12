@@ -3,6 +3,7 @@ package net.ledestudio.example.mod.screen;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.ledestudio.example.mod.ExampleMod;
+import net.ledestudio.example.mod.client.ClientInboundHandler;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -45,5 +46,7 @@ public class Layer implements LayeredDraw.Layer {
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             guiGraphics.drawCenteredString(font, String.valueOf((int) gauge.getGauge()), (int) (width * 0.5f), (int) (height * 0.8f), 0xFF123456);
+
+
     }
 }

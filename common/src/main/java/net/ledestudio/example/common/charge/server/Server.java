@@ -22,7 +22,7 @@ public class Server {
 
     private int port;
 
-    private Channel channel;
+    private static Channel channel;
 
     public Server(int port) {
         this.port = port;
@@ -41,10 +41,13 @@ public class Server {
 
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync(); // (7)
-            String key = ServerInboundHandler.getKey();
-            if(key != null) {
-                channel = ServerInboundHandler.channelsMap.get(key);
-            }
+//            String key = ServerInboundHandler.getKey();
+
+
+
+
+
+
             Logger.getLogger("Network").info("Server Started");
 
             // Wait until the server socket is closed.
@@ -57,7 +60,10 @@ public class Server {
         }
     }
 
-    public void sendPacket(ByteBuf buf) {
+    public static void sendPacket(ByteBuf buf) {
+        String key = ServerInboundHandler.getKey();
+
+        channel = ServerInboundHandler.channelsMap.get(key);
         if (channel != null && channel.isActive()){
             channel.writeAndFlush(buf);
         }

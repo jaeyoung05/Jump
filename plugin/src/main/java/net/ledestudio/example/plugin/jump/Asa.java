@@ -1,7 +1,5 @@
 package net.ledestudio.example.plugin.jump;
 
-import net.ledestudio.example.common.charge.server.ConfirmationShoes;
-import net.ledestudio.example.common.charge.server.Server;
 import org.bukkit.entity.Player;
 
 
@@ -21,7 +19,7 @@ public class Asa {
 //            Server server = new Server(1234);
 //            server.run();
 //
-//            ConfirmationShoes shoes = new ConfirmationShoes(12);
+//            ConfirmationBoots shoes = new ConfirmationBoots();
 //            server.sendPacket(shoes.toByteBuf());
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);

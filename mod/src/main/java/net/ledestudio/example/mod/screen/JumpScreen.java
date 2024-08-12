@@ -1,7 +1,7 @@
 package net.ledestudio.example.mod.screen;
 
 import net.ledestudio.example.mod.ExampleMod;
-import net.ledestudio.example.mod.charge.Gauge;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;

@@ -8,6 +8,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import net.ledestudio.example.common.charge.Charge;
+import net.ledestudio.example.common.charge.Hy;
+import net.ledestudio.example.common.charge.check.Boots;
 
 
 import java.util.Map;
@@ -30,6 +32,14 @@ public class ServerInboundHandler extends ChannelInboundHandlerAdapter {
         ServerInboundHandler.key = key;
     }
 
+    public static boolean getIsBoolean() {
+        return isBoolean;
+    }
+
+    public static void setIsBoolean(boolean isBoolean) {
+        ServerInboundHandler.isBoolean = isBoolean;
+    }
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Logger.getLogger("Network").info("Channel Active");
@@ -42,7 +52,7 @@ public class ServerInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-
+        channelsMap.remove(getKey(),ctx.channel());
     }
 
     @Override
@@ -54,9 +64,12 @@ public class ServerInboundHandler extends ChannelInboundHandlerAdapter {
                 Charge charge = new Charge (buf);
                 Logger.getLogger("Network").info(charge.toString());
                 gauge1 = charge.getGauge();
-                isBoolean = charge.getBoolean();
+                setIsBoolean(charge.getBoolean());
                 name = charge.getName();
-                Logger.getLogger("dda").info(String.valueOf(gauge1));
+                Logger.getLogger(name).info(String.valueOf(gauge1));
+                Boots boots = new Boots();
+                boots.Check(getIsBoolean());
+                boots.jump(getIsBoolean(),gauge1);
             }
         } finally {
             ReferenceCountUtil.release(msg);
@@ -66,6 +79,7 @@ public class ServerInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
-        channelsMap.remove(getKey());
+        channelsMap.remove(getKey(),ctx.channel());
+        ctx.close();
     }
 }
